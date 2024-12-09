@@ -13,10 +13,7 @@ app.use(express.static('public'));
 // });
 
 // Dummy data for students
-const students = [
-    { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' }
-];
+
 
 // Route to handle GET /students
 app.get('/students', (req, res) => {
@@ -31,10 +28,10 @@ app.get('/about', (req, res) => {
 });
 
 // Middleware to handle undefined routes
-app.use((req, res) => {
+//app.use((req, res) => {
     // Respond with a 404 status and a custom message
-    res.status(404).send('Route not found');
-});
+   // res.status(404).send('Route not found');
+//});
 
 // Serve the index.html file for the root route
 app.get('/', (req, res) => {
@@ -47,4 +44,21 @@ const PORT = 3000;
 // Start the server and log a message to the console
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+});
+// Array of student objects with id, name, and email
+const students = [
+    { id: 1, name: 'John Doe', email: 'john.doe@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com' },
+    { id: 3, name: 'Sam Wilson', email: 'sam.wilson@example.com' }
+];
+// Route to get a student by ID
+app.get('/students/:id', (req, res) => {
+    const studentId = parseInt(req.params.id); // Convert the id from the request parameter to an integer
+    const student = students.find(s => s.id === studentId); // Search for the student with the matching id
+
+    if (student) {
+        res.json(student); // Send the matched student data as JSON
+    } else {
+        res.status(404).json({ error: 'Student not found' }); // Send a 404 response if no student is found
+    }
 });
